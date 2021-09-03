@@ -3,6 +3,7 @@ package dev.smrth.madlibz;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.TextView;
 
 import com.android.volley.NetworkResponse;
@@ -26,22 +27,26 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void testRequest() {
+        Log.w("CHITGOPEKAR", "CALLED!");
+
         final TextView text = findViewById(R.id.text);
 
         RequestQueue q = Volley.newRequestQueue(this);
-        String url = "http://madlibz.herokuapp.com/api/random";
+        String url = "https://madlibz.herokuapp.com/api/random";
 
         JsonObjectRequest req = new JsonObjectRequest
                 (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
+                        Log.w("CHITGOPEKAR", response.toString());
                         text.setText(response.toString());
                     }
                 }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        return;
+                        Log.e("CHITGOPEKAR", error.toString());
                     }
                 });
+        q.add(req);
     }
 }
