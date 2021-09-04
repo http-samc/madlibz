@@ -27,18 +27,23 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        this.getMadlib();
+        //this.getMadlib();
     }
 
+    /**
+     * Makes a GET request to MainActivity.MADLIB_API_URL to get
+     * a JSONObject representation of a Madlib.
+     * Calls MainActivity.renderMadlib() to display it.
+     */
     public void getMadlib() {
 
-        RequestQueue q = Volley.newRequestQueue(this);
-        MainActivity m = this;
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        MainActivity mainActivity = this;
         JsonObjectRequest req = new JsonObjectRequest
                 (Request.Method.GET, this.MADLIB_API_URL, null, new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject madlib) {
-                        m.renderMadlib(madlib);
+                        mainActivity.renderMadlib(madlib);
                     }
                 }, new Response.ErrorListener() {
                     @Override
@@ -46,21 +51,23 @@ public class MainActivity extends AppCompatActivity {
                         Log.e("CHITGOPEKAR", error.toString());
                     }
                 });
-        q.add(req);
+        requestQueue.add(req);
     }
 
+    /**
+     * Renders a Madlib onto the main activity,
+     * called by MainActivity.getMadlib()
+     * @param madlib JSONObject representing a Madlib
+     */
     public void renderMadlib(JSONObject madlib) {
         final TextView madlibContainer = findViewById(R.id.text);
-        Log.w("CHITGOPEAR", "CALLED");
+
         try {
             String title = madlib.getString("title");
-            Log.w("CHITGOPEAR", title);
             madlibContainer.setText(title);
         }
         catch (JSONException e) {
             Log.w("CHITGOPEKAR", "JSON key not found!");
         }
-
-        madlibContainer.setText(madlib.toString());
     }
 }
