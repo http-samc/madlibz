@@ -1,10 +1,10 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.Madlibz" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    <style name="Theme.Madlibz" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/bootstrap_gray</item>
         <item name="colorPrimaryVariant">@color/bootstrap_gray</item>
-        <item name="colorOnPrimary">@color/bootstrap_gray</item>
+        <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/bootstrap_gray</item>
         <item name="colorSecondaryVariant">@color/bootstrap_gray</item>
