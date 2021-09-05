@@ -164,16 +164,20 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public String genSolutionHTML() throws JSONException {
-        String html = "";
+        final TextView madlibTitleTv = findViewById(this.TITLE);
+
+        String html = "<h1>" + madlibTitleTv.getText() + "</h1><br><p>";
+
         for (int i = 0; i < this.template.length()-1; i++) {
             if (i == this.template.length()-2) {
-                html += "<p>" + this.template.get(i) + "<p>"; // idx unique to template arr
+                html += this.template.get(i); // idx unique to template arr
             }
             else {
-                html += "<p>" + this.template.get(i) + "</p>";
-                html += "<h3>" + this.answers.get(i) + "</h3>";
+                html += this.template.get(i);
+                html += "<b>" + this.answers.get(i) + "</b>";
             }
         }
+        html += "</p>";
         return html;
     }
 
