@@ -92,6 +92,7 @@ public class MainActivity extends AppCompatActivity {
         // Creating title TV and adding to Madlib Container
         final TextView madlibTitleTV = new TextView(this);
         madlibTitleTV.setId(this.TITLE);
+        madlibTitleTV.setTextSize(40);
         madlibContianerLL.addView(madlibTitleTV);
 
         try {
@@ -112,7 +113,6 @@ public class MainActivity extends AppCompatActivity {
                 EditText current = new EditText(this);
                 current.setHint(this.blanks.getString(i));
                 //  TODO REMOVE
-                current.setText("INJECTED");
                 madlibContianerLL.addView(current);
             }
         }
