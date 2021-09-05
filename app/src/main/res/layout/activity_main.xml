@@ -45,6 +45,7 @@
             android:layout_weight="1"
             android:width="40dp"
             android:minWidth="40dp"
+            android:onClick="solveMadlib"
             android:text="SOLVE" />
     </LinearLayout>
 

@@ -2,34 +2,40 @@ package dev.smrth.madlibz;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.JsonRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
-
 public class MainActivity extends AppCompatActivity {
 
+    // Constants
     private final String MADLIB_API_URL = "https://madlibz.herokuapp.com/api/random";
-    private final int BLANKS_START = 69420;
+    public static final String SOLUTION = "MADLIB_SOLUTION";
     private final int TITLE = 42069;
+
+    // Madlib attrs
+    private JSONArray blanks;
+    private JSONArray answers;
+    private JSONArray template;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,20 +99,20 @@ public class MainActivity extends AppCompatActivity {
             madlibTitleTV.setText(madlib.getString("title"));
 
             // Get Blanks and Values
-            JSONArray blanks =  madlib.getJSONArray("blanks");
-            JSONArray values =  madlib.getJSONArray("value"); // set in SP for later; 2 longer than blanks
+            this.blanks =  madlib.getJSONArray("blanks");
+            this.template =  madlib.getJSONArray("value"); // set in SP for later; 2 longer than blanks
 
 
             /*
                 Create blanks programmatically & dynamically
-                ID -> "<this.BLANKS_START + idx of blank>"
                 Placeholder -> "<blanks.getString(<idx of blank>)"
              */
 
-            for (int i = 0; i < blanks.length(); i++) {
+            for (int i = 0; i < this.blanks.length(); i++) {
                 EditText current = new EditText(this);
-                current.setHint(blanks.getString(i));
-                current.setId(this.BLANKS_START+i);
+                current.setHint(this.blanks.getString(i));
+                //  TODO REMOVE
+                current.setText("INJECTED");
                 madlibContianerLL.addView(current);
             }
         }
@@ -122,5 +128,74 @@ public class MainActivity extends AppCompatActivity {
     public void destroyMadlib() {
         final LinearLayout madlibContianerLL = findViewById(R.id.madlib_container);
         madlibContianerLL.removeAllViews();
+    }
+
+    /**
+     * Goes through all the Madlib blanks and makes sure
+     * that there is some non-space character in each of them.
+     * Returns false if one missed input is found.
+     * Pops Toast with missing input field's name.
+     * Also creates MainActivity.answers JSONArray while validating.
+     * @return
+     */
+    public boolean validateMadlib() {
+        final LinearLayout madlibContianerLL = findViewById(R.id.madlib_container);
+        this.answers = new JSONArray();
+
+        for (int i = 0; i < madlibContianerLL.getChildCount(); i++) {
+
+            View v = madlibContianerLL.getChildAt(i);
+            if (!(v instanceof EditText))
+                continue;
+
+            TextView tv = (TextView) v;
+            String text = tv.getText().toString();
+
+            if (text.replace(" ", "").equals("")) {
+                Toast.makeText(this, "Enter a value for '" + tv.getHint().toString() + "'!", Toast.LENGTH_SHORT).show();
+                return false;
+            }
+            else {
+                this.answers.put(text);
+            }
+        }
+
+        return true;
+    }
+
+    public String genSolutionHTML() throws JSONException {
+        String html = "";
+        for (int i = 0; i < this.template.length()-1; i++) {
+            if (i == this.template.length()-2) {
+                html += "<p>" + this.template.get(i) + "<p>"; // idx unique to template arr
+            }
+            else {
+                html += "<p>" + this.template.get(i) + "</p>";
+                html += "<h3>" + this.answers.get(i) + "</h3>";
+            }
+        }
+        return html;
+    }
+
+    public void solveMadlib(View v) {
+        // If the user hasn't solved their Madlib yet -> shake btn & return
+        if (!this.validateMadlib()) {
+            v.startAnimation(AnimationUtils.loadAnimation(this,R.anim.shake));
+            return;
+        }
+
+        String solution;
+
+        try {
+            solution = genSolutionHTML();
+        }
+        catch (JSONException e) {
+            Log.w("CHITGOPEKAR", e.toString());
+            solution = "<h1>Unknown Error!</h1><p>Reference: " + e.toString() + "</p>";
+        }
+
+        Intent intent = new Intent(getBaseContext(), SolutionActivity.class);
+        intent.putExtra(this.SOLUTION, solution);
+        startActivity(intent);
     }
 }
