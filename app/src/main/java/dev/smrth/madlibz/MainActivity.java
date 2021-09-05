@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -41,9 +42,7 @@ public class MainActivity extends AppCompatActivity {
      * Makes a GET request to MainActivity.MADLIB_API_URL to get
      * a JSONObject representation of a Madlib.
      * Calls MainActivity.renderMadlib() to display it.
-     * Called on load (if no previous Madlib)
      */
-
     public void getMadlib() {
 
         RequestQueue requestQueue = Volley.newRequestQueue(this);
@@ -64,12 +63,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Calls getMadlib() when the refresh_madlib
-     * button is clicked. Calls okToRefresh() before proceeding.
+     * First removes the current Madlib by calling
+     * MainActivity.destroyMadlib() and then gets a new
+     * one with MainActivity.getMadlib()
      * @param v View representing the button that was clicked
      */
     public void refreshMadlib(View v) {
-        // TODO write okToRefresh() and use in conditional here
         this.destroyMadlib();
         this.getMadlib();
     }
@@ -100,7 +99,7 @@ public class MainActivity extends AppCompatActivity {
 
             /*
                 Create blanks programmatically & dynamically
-                ID -> "blank_<idx of blank>"
+                ID -> "<this.BLANKS_START + idx of blank>"
                 Placeholder -> "<blanks.getString(<idx of blank>)"
              */
 
@@ -116,6 +115,10 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Destroys a rendered Madlib by finding the
+     * Madlib Container layout and removing all views
+     */
     public void destroyMadlib() {
         final LinearLayout madlibContianerLL = findViewById(R.id.madlib_container);
         madlibContianerLL.removeAllViews();
