@@ -4,16 +4,59 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/bootstrap_gray"
     tools:context=".MainActivity"
     tools:layout_editor_absoluteY="81dp">
 
     <LinearLayout
-        android:layout_width="411dp"
+        android:id="@+id/madlib_container"
+        android:layout_width="0dp"
         android:layout_height="603dp"
+        android:layout_marginBottom="16dp"
+        android:background="@color/bootstrap_gray_dark"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"></LinearLayout>
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:layout_width="300dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/madlib_container">
+
+        <Button
+            android:id="@+id/open_history"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:width="40dp"
+            android:minWidth="40dp"
+            android:text="HISTORY" />
+
+        <Button
+            android:id="@+id/refresh_madlib"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:width="40dp"
+            android:minWidth="40dp"
+            android:onClick="refreshMadlib"
+            android:text="REFRESH" />
+
+        <Button
+            android:id="@+id/solve_madlib"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:width="40dp"
+            android:minWidth="40dp"
+            android:text="SOLVE" />
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
