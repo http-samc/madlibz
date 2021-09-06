@@ -251,7 +251,7 @@ public class MainActivity extends AppCompatActivity {
     public String genSolutionHTML() throws JSONException {
         final TextView madlibTitleTv = findViewById(this.TITLE);
 
-        String html = "<h1>" + madlibTitleTv.getText() + "</h1><br><p>";
+        String html = "<h1>" + madlibTitleTv.getText() + "</h1><p>";
 
         for (int i = 0; i < this.template.length()-1; i++) {
             if (i == this.template.length()-2) {

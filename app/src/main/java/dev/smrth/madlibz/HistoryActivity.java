@@ -50,7 +50,7 @@ public class HistoryActivity extends AppCompatActivity {
 
     public String genSolutionHTML(JSONArray template, JSONArray answers, String title) throws JSONException {
 
-        String html = "<h1>" + title + "</h1><br><p>";
+        String html = "<h1>" + title + "</h1><p>";
 
         for (int i = 0; i < template.length()-1; i++) {
             if (i == template.length()-2) {

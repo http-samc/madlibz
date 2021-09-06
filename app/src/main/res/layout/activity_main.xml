@@ -8,20 +8,50 @@
     tools:context=".MainActivity"
     tools:layout_editor_absoluteY="81dp">
 
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="15dp"
+        android:src="@drawable/images"
+        app:layout_constraintBottom_toTopOf="@+id/madlib_scrollview"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ScrollView
+        android:id="@+id/madlib_scrollview"
+        android:layout_width="390dp"
+        android:layout_height="580dp"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="SpeakableTextPresentCheck">
+
+        <LinearLayout
+            android:id="@+id/madlib_container"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:orientation="vertical"></LinearLayout>
+    </ScrollView>
+
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="300dp"
         android:layout_height="60dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginBottom="20dp"
         android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/madlib_scrollview">
+        app:layout_constraintStart_toStartOf="parent">
 
         <Button
             android:id="@+id/open_history"
-            style="@style/actionBtn"
+            style="@style/madlibHistoryDelBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -43,7 +73,7 @@
 
         <Button
             android:id="@+id/solve_madlib"
-            style="@style/actionBtn"
+            style="@style/madlibHistoryOpenBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -51,23 +81,7 @@
             android:minWidth="40dp"
             android:onClick="solveMadlib"
             android:text="@string/solve_btn" />
+
     </LinearLayout>
 
-    <ScrollView
-        android:id="@+id/madlib_scrollview"
-        android:layout_width="390dp"
-        android:layout_height="640dp"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="SpeakableTextPresentCheck">
-
-        <LinearLayout
-            android:id="@+id/madlib_container"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:orientation="vertical" />
-    </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>
