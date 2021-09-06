@@ -147,7 +147,10 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * Converts cached Madlib (from SP) into single JSONObject
-     * that MainActivity.renderMadlib(JSONObject madlib) can render
+     * that MainActivity.renderMadlib(JSONObject madlib) can render.
+     * Contains logic that determines if a previous Madlib existed
+     * or if we should just request a new one. Should be called only
+     * on initial load.
      */
     public void renderLastMadlib() {
 
@@ -278,10 +281,13 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
+        // On validation, generate solution HTML and add Madlib to history
+
         String solution;
 
         try {
-            solution = genSolutionHTML();
+            solution = this.genSolutionHTML();
+            this.saveMadlibToHistory();
         }
         catch (JSONException e) {
             Log.w("CHITGOPEKAR", e.toString());
@@ -299,35 +305,66 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onStop() {
         super.onStop();
+        this.saveMadlibOnClose();
+    }
+
+    /**
+     * Creates Madlib from current state
+     * @return JSONObject
+     */
+    public JSONObject getCurrMadlib() {
+        JSONObject madlib = new JSONObject(); // return obj
+
         try {
-            this.saveMadlibOnClose();
+            final TextView titleTV = (TextView) findViewById(this.TITLE); // title TV
+
+            // Add attrs
+            madlib.put("title", titleTV.getText().toString());
+            madlib.put("blanks", this.blanks.toString());
+            madlib.put("answers", this.answers.toString());
+            madlib.put("template", this.template.toString());
         }
         catch (JSONException e) {
             Log.w("CHITGOPEKAR", e.toString());
         }
+
+        return madlib;
     }
 
     /**
      * Saves the current Madlib being viewed to SP onClose
      * Works regardless of completion status
      */
-    public void saveMadlibOnClose() throws JSONException {
+    public void saveMadlibOnClose() {
         // User hasn't clicked 'Solve' yet
         if (this.answers == null)
             this.genAnswers();
 
-        // Create Madlib object
-        JSONObject madlib = new JSONObject();
-        TextView titleTV = (TextView) this.madlibContianerLL.getChildAt(0);
-        madlib.put("title", titleTV.getText().toString());
-        madlib.put("blanks", this.blanks.toString());
-        madlib.put("answers", this.answers.toString());
-        madlib.put("template", this.template.toString());
-
         // Save as MADLIB_LAST
         SharedPreferences.Editor editor = this.sharedPreferences.edit();
-        editor.putString(this.MADLIB_LAST, madlib.toString());
+        editor.putString(this.MADLIB_LAST, this.getCurrMadlib().toString());
         editor.apply();
     }
 
+    /**
+     * Saves currently opened Madlib to SP MADLIB_HISTORY
+     * only after it has passed MainActivity.validateMadlib()
+     */
+    public void saveMadlibToHistory() throws JSONException {
+
+        // Get current history
+        JSONArray madlibHistory = new JSONArray(
+                this.sharedPreferences.getString(this.MADLIB_HISTORY,"[]")
+        );
+
+        // Add the current madlib
+        madlibHistory.put(this.getCurrMadlib());
+
+        // Get editor and overwrite key to SP
+        SharedPreferences.Editor editor = this.sharedPreferences.edit();
+        editor.putString(this.MADLIB_HISTORY, madlibHistory.toString());
+        editor.apply();
+
+        Log.w("CHITGOPEKAR", this.sharedPreferences.getString(this.MADLIB_HISTORY, ""));
+    }
 }
