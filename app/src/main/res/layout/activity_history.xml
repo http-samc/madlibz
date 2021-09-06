@@ -10,6 +10,7 @@
     <ScrollView
         android:layout_width="370dp"
         android:layout_height="729dp"
+        android:layout_marginTop="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -48,6 +49,14 @@
                     android:text="DELETE ALL"
                     android:textColor="@color/bootstrap_brand_secondary_text" />
             </LinearLayout>
+
+            <View
+                android:id="@+id/divider"
+                android:layout_width="match_parent"
+                android:layout_height="5dp"
+                android:layout_marginTop="4dp"
+                android:background="?android:attr/listDivider" />
+
         </LinearLayout>
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>
