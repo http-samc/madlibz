@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="madlibHistoryContainer" parent="TextAppearance.AppCompat">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_margin">15dip</item>
+        <item name="android:background">@color/bootstrap_brand_primary</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:padding">10dp</item>
+        <item name="android:textColor">@color/bootstrap_brand_secondary_text</item>
+    </style>
+    <style name="madlibHistoryTitle" parent="TextAppearance.AppCompat">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">10dip</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:fontFamily">cursive</item>
+        <item name="android:textSize">28sp</item>
+        <item name="android:textColor">@color/bootstrap_brand_secondary_text</item>
+    </style>
+    <!-- Action btn parent -->
+    <style name="madlibHistoryActionBtn" parent="TextAppearance.AppCompat">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_margin">5dip</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:minWidth">40dip</item>
+        <item name="android:minHeight">40dip</item>
+        <item name="android:width">50dip</item>
+        <item name="android:textColor">@color/bootstrap_brand_secondary_text</item>
+    </style>
+    <!-- open btn -->
+    <style name="madlibHistoryOpenBtn" parent="madlibHistoryActionBtn">
+        <item name="android:background">@drawable/open_btn</item>
+        <item name="android:text">OPEN</item>
+    </style>
+    <!-- del btn -->
+    <style name="madlibHistoryDelBtn" parent="madlibHistoryActionBtn">
+        <item name="android:background">@drawable/del_btn</item>
+        <item name="android:text">DELETE</item>
+    </style>
+    <!-- del all btn -->
+    <style name="madlibHistoryDelAllBtn" parent="madlibHistoryActionBtn">
+        <item name="android:background">@drawable/del_all_btn</item>
+        <item name="android:text">DELETE ALL</item>
+        <item name="android:width">60dip</item>
+    </style>
+</resources>

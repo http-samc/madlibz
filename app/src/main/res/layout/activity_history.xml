@@ -33,21 +33,15 @@
                     android:id="@+id/textView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="2dp"
+                    android:layout_marginTop="10dp"
                     android:layout_weight="1"
+                    android:fontFamily="sans-serif-smallcaps"
                     android:text="Madlibz History"
                     android:textSize="34sp" />
 
                 <Button
                     android:id="@+id/deleteAll"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:height="30dp"
-                    android:background="@color/bootstrap_brand_danger"
-                    android:minHeight="30dp"
-                    android:text="DELETE ALL"
-                    android:textColor="@color/bootstrap_brand_secondary_text" />
+                    style="@style/madlibHistoryDelAllBtn" />
             </LinearLayout>
 
             <View
@@ -56,6 +50,19 @@
                 android:layout_height="5dp"
                 android:layout_marginTop="4dp"
                 android:background="?android:attr/listDivider" />
+
+            <LinearLayout style="@style/madlibHistoryContainer">
+
+                <TextView
+                    style="@style/madlibHistoryTitle"
+                    android:text="A Trip to the Park" />
+
+                <Button
+                    style="@style/madlibHistoryOpenBtn" />
+
+                <Button
+                    style="@style/madlibHistoryDelBtn" />
+            </LinearLayout>
 
         </LinearLayout>
     </ScrollView>
