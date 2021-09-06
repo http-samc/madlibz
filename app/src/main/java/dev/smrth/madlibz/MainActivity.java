@@ -10,6 +10,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.view.ContextThemeWrapper;
 import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
@@ -113,7 +114,7 @@ public class MainActivity extends AppCompatActivity {
         this.answers = null;
 
         // Creating title TV and adding to Madlib Container
-        final TextView madlibTitleTV = new TextView(this);
+        final TextView madlibTitleTV = new TextView(this, null, 0, R.style.title);
         madlibTitleTV.setId(this.TITLE);
         madlibTitleTV.setTextSize(40);
         this.madlibContianerLL.addView(madlibTitleTV);

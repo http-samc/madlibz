@@ -30,14 +30,9 @@
                 android:textAlignment="center">
 
                 <TextView
-                    android:id="@+id/textView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:layout_weight="1"
-                    android:fontFamily="sans-serif-smallcaps"
-                    android:text="Madlibz History"
-                    android:textSize="34sp" />
+                    style="@style/title"
+                    android:layout_marginTop="10dip"
+                    android:text="Madlibz History" />
 
                 <Button
                     android:id="@+id/deleteAll"
