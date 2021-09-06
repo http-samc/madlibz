@@ -37,11 +37,13 @@
         <item name="android:width">50dip</item>
         <item name="android:textColor">@color/bootstrap_brand_secondary_text</item>
         <item name="android:background">@drawable/action_btn</item>
+        <item name="android:gravity">center_horizontal|center_vertical</item>
     </style>
     <!-- open btn -->
     <style name="madlibHistoryOpenBtn" parent="actionBtn">
         <item name="android:background">@drawable/open_btn</item>
         <item name="android:text">@string/open_btn</item>
+        <item name="android:onClick">cli</item>
     </style>
     <!-- del btn -->
     <style name="madlibHistoryDelBtn" parent="actionBtn">

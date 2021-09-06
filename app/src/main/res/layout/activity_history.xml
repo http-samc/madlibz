@@ -18,6 +18,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
+            android:id="@+id/history_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
@@ -53,11 +54,12 @@
                     android:text="A Trip to the Park" />
 
                 <Button
-                    style="@style/madlibHistoryOpenBtn" />
+                    style="@style/madlibHistoryOpenBtn"
+                     />
 
-                <Button
-                    style="@style/madlibHistoryDelBtn" />
+                <Button style="@style/madlibHistoryDelBtn" />
             </LinearLayout>
+
 
         </LinearLayout>
     </ScrollView>
