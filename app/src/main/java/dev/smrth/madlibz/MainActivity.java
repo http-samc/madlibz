@@ -37,9 +37,10 @@ public class MainActivity extends AppCompatActivity {
     private final int TITLE = 42069;
 
     // Shared Preferences Constants
-    private final String PREFERENCE_FILE_KEY = "dev.smrth.madlibz.PREFERENCE_FILE_KEY";
+    public static final String PREFERENCE_FILE_KEY = "dev.smrth.madlibz.PREFERENCE_FILE_KEY";
+    // Other activities don't need to know last Madlib...
     private final String MADLIB_LAST = "dev.smrth.madlibz.MADLIB_LAST";
-    private final String MADLIB_HISTORY = "dev.smrth.madlibz.MADLIB_HISTORY";
+    public static final String MADLIB_HISTORY = "dev.smrth.madlibz.MADLIB_HISTORY";
 
     // Vars to be instantiated on load
     private LinearLayout madlibContianerLL;
@@ -366,5 +367,14 @@ public class MainActivity extends AppCompatActivity {
         editor.apply();
 
         Log.w("CHITGOPEKAR", this.sharedPreferences.getString(this.MADLIB_HISTORY, ""));
+    }
+
+    /**
+     * Opens Madlib History panel
+     * @param v, the button that triggered the method call
+     */
+    public void openMadlibHistory(View v) {
+        Intent intent = new Intent(getBaseContext(), HistoryActivity.class);
+        startActivity(intent);
     }
 }
