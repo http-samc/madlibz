@@ -37,7 +37,8 @@
 
                 <Button
                     android:id="@+id/deleteAll"
-                    style="@style/madlibHistoryDelAllBtn" />
+                    style="@style/madlibHistoryDelAllBtn"
+                    android:onClick="clearHistory" />
             </LinearLayout>
 
             <View
@@ -45,20 +46,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="5dp"
                 android:layout_marginTop="4dp"
+                android:layout_marginBottom="4dp"
                 android:background="?android:attr/listDivider" />
-
-            <LinearLayout style="@style/madlibHistoryContainer">
-
-                <TextView
-                    style="@style/madlibHistoryTitle"
-                    android:text="A Trip to the Park" />
-
-                <Button
-                    style="@style/madlibHistoryOpenBtn"
-                     />
-
-                <Button style="@style/madlibHistoryDelBtn" />
-            </LinearLayout>
 
 
         </LinearLayout>

@@ -3,8 +3,11 @@ package dev.smrth.madlibz;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
+import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,8 +44,25 @@ public class HistoryActivity extends AppCompatActivity {
             this.renderHistory();
         }
         catch (JSONException e) {
-            Log.w("CHITGOPEKAR", e.toString());
+            //Log.w("CHITGOPEKAR", e.toString());
         }
+    }
+
+    public String genSolutionHTML(JSONArray template, JSONArray answers, String title) throws JSONException {
+
+        String html = "<h1>" + title + "</h1><br><p>";
+
+        for (int i = 0; i < template.length()-1; i++) {
+            if (i == template.length()-2) {
+                html += template.get(i); // idx unique to template arr
+            }
+            else {
+                html += template.get(i);
+                html += "<b>" + answers.get(i) + "</b>";
+            }
+        }
+        html += "</p>";
+        return html;
     }
 
     public void renderHistory() throws JSONException {
@@ -52,43 +72,32 @@ public class HistoryActivity extends AppCompatActivity {
 
         for (int i = 0; i < this.history.length(); i++) {
             JSONObject madlib = (JSONObject) this.history.get(i);
-            LinearLayout madlibHistoryContainer = new LinearLayout(
-                    this,
-                    null,
-                    0,
-                    R.style.madlibHistoryContainer
+            String html = this.genSolutionHTML(
+                    new JSONArray(madlib.getString("template")),
+                    new JSONArray(madlib.getString("answers")),
+                    madlib.getString("title")
             );
-            TextView madlibHistoryTitle = new TextView(
-                    this,
-                    null,
-                    0,
-                    R.style.madlibHistoryTitle
-            );
-            madlibHistoryTitle.setText("A trip to the park"
-                    //madlib.getString("title")
-            );
-            Button openBtn = new Button(
-                    this,
-                    null,
-                    0,
-                    R.style.madlibHistoryOpenBtn
-            );
-            Button delBtn = new Button(
-                    this,
-                    null,
-                    0,
-                    R.style.madlibHistoryDelBtn
-            );
-
-            madlibHistoryContainer.addView(madlibHistoryTitle);
-            madlibHistoryContainer.addView(openBtn);
-            madlibHistoryContainer.addView(delBtn);
-
-            this.historyContainerLL.addView(
-                    madlibHistoryContainer
-            );
-            //Log.w("CHITGOPEKAR", this.history.get(i).toString());
+            TextView container = new TextView(this);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                container.setText(Html.fromHtml(html, Html.FROM_HTML_MODE_COMPACT));
+            } else {
+                container.setText(Html.fromHtml(html));
+            }
+            this.historyContainerLL.addView(container);
         }
+    }
 
+    public void clearHistory(View v) {
+        // Remove everything (incl. headers) and just return to MainActivity
+        this.historyContainerLL.removeAllViews();
+
+        // Clear SharedPreferences
+        SharedPreferences.Editor editor = this.sharedPreferences.edit();
+        editor.putString(MainActivity.MADLIB_HISTORY, "[]");
+        editor.apply();
+
+        // Send back to MainActivity
+        Intent intent = new Intent(getBaseContext(), MainActivity.class);
+        startActivity(intent);
     }
 }

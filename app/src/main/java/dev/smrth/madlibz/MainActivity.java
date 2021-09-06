@@ -366,8 +366,6 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences.Editor editor = this.sharedPreferences.edit();
         editor.putString(this.MADLIB_HISTORY, madlibHistory.toString());
         editor.apply();
-
-        Log.w("CHITGOPEKAR", this.sharedPreferences.getString(this.MADLIB_HISTORY, ""));
     }
 
     /**

@@ -15,7 +15,7 @@
         <item name="android:layout_weight">1</item>
         <item name="android:fontFamily">sans-serif-smallcaps</item>
         <item name="android:textSize">34sp</item>
-        <item name="android:textColor">@color/bootstrap_brand_secondary_text</item>
+        <item name="android:textColor">@color/teal_700</item>
     </style>
     <style name="madlibHistoryTitle" parent="TextAppearance.AppCompat">
         <item name="android:layout_width">wrap_content</item>
