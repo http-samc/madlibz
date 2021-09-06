@@ -1,3 +1,14 @@
 <resources>
     <string name="app_name">madlibz</string>
+
+    <!-- main activity -->
+    <string name="history_btn">HISTORY</string>
+    <string name="refresh_btn">REFRESH</string>
+    <string name="solve_btn">SOLVE</string>
+
+    <!-- history activity -->
+    <string name="open_btn">OPEN</string>
+    <string name="del_btn">DELETE</string>
+    <string name="del_all_btn">DELETE ALL</string>
+    
 </resources>

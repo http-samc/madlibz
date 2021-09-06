@@ -28,7 +28,7 @@
             android:width="40dp"
             android:minWidth="40dp"
             android:onClick="openMadlibHistory"
-            android:text="HISTORY" />
+            android:text="@string/history_btn" />
 
         <Button
             android:id="@+id/refresh_madlib"
@@ -39,7 +39,7 @@
             android:width="40dp"
             android:minWidth="40dp"
             android:onClick="refreshMadlib"
-            android:text="REFRESH" />
+            android:text="@string/refresh_btn" />
 
         <Button
             android:id="@+id/solve_madlib"
@@ -50,7 +50,7 @@
             android:width="40dp"
             android:minWidth="40dp"
             android:onClick="solveMadlib"
-            android:text="SOLVE" />
+            android:text="@string/solve_btn" />
     </LinearLayout>
 
     <ScrollView

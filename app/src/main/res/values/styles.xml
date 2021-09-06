@@ -41,17 +41,17 @@
     <!-- open btn -->
     <style name="madlibHistoryOpenBtn" parent="actionBtn">
         <item name="android:background">@drawable/open_btn</item>
-        <item name="android:text">OPEN</item>
+        <item name="android:text">@string/open_btn</item>
     </style>
     <!-- del btn -->
     <style name="madlibHistoryDelBtn" parent="actionBtn">
         <item name="android:background">@drawable/del_btn</item>
-        <item name="android:text">DELETE</item>
+        <item name="android:text">@string/del_btn</item>
     </style>
     <!-- del all btn -->
     <style name="madlibHistoryDelAllBtn" parent="actionBtn">
         <item name="android:background">@drawable/del_all_btn</item>
-        <item name="android:text">DELETE ALL</item>
+        <item name="android:text">@string/del_all_btn</item>
         <item name="android:width">60dip</item>
     </style>
 </resources>
