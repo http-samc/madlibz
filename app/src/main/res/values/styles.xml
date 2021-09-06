@@ -55,5 +55,6 @@
         <item name="android:background">@drawable/del_all_btn</item>
         <item name="android:text">@string/del_all_btn</item>
         <item name="android:width">60dip</item>
+        <item name="android:maxWidth">80dip</item>
     </style>
 </resources>
