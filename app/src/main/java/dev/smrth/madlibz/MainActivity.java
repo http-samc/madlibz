@@ -1,8 +1,12 @@
 package dev.smrth.madlibz;
 
+import static java.util.Objects.isNull;
+
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -32,6 +36,15 @@ public class MainActivity extends AppCompatActivity {
     public static final String SOLUTION = "MADLIB_SOLUTION";
     private final int TITLE = 42069;
 
+    // Shared Preferences Constants
+    private final String PREFERENCE_FILE_KEY = "dev.smrth.madlibz.PREFERENCE_FILE_KEY";
+    private final String MADLIB_LAST = "dev.smrth.madlibz.MADLIB_LAST";
+    private final String MADLIB_HISTORY = "dev.smrth.madlibz.MADLIB_HISTORY";
+
+    // Vars to be instantiated on load
+    private LinearLayout madlibContianerLL;
+    private SharedPreferences sharedPreferences;
+
     // Madlib attrs
     private JSONArray blanks;
     private JSONArray answers;
@@ -41,7 +54,16 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        this.getMadlib();
+
+        // Instantiating select constants
+        this.madlibContianerLL = findViewById(R.id.madlib_container);
+        this.sharedPreferences = getSharedPreferences(
+                this.PREFERENCE_FILE_KEY,
+                Context.MODE_PRIVATE
+        );
+
+        // Rendering Madlib
+        this.renderLastMadlib();
     }
 
     /**
@@ -86,23 +108,25 @@ public class MainActivity extends AppCompatActivity {
      */
     public void renderMadlib(JSONObject madlib) {
 
-        // Getting refernce to Madlib Container
-        final LinearLayout madlibContianerLL = findViewById(R.id.madlib_container);
+        // We don't have answers yet
+        this.answers = null;
 
         // Creating title TV and adding to Madlib Container
         final TextView madlibTitleTV = new TextView(this);
         madlibTitleTV.setId(this.TITLE);
         madlibTitleTV.setTextSize(40);
-        madlibContianerLL.addView(madlibTitleTV);
+        this.madlibContianerLL.addView(madlibTitleTV);
 
         try {
             // Set title
             madlibTitleTV.setText(madlib.getString("title"));
 
             // Get Blanks and Values
-            this.blanks =  madlib.getJSONArray("blanks");
-            this.template =  madlib.getJSONArray("value"); // set in SP for later; 2 longer than blanks
-
+            this.blanks =  new JSONArray(madlib.getString("blanks"));
+            if (madlib.has("value"))
+                this.template =  new JSONArray(madlib.getString("value"));
+            else
+                this.template =  new JSONArray(madlib.getString("template"));
 
             /*
                 Create blanks programmatically & dynamically
@@ -112,11 +136,53 @@ public class MainActivity extends AppCompatActivity {
             for (int i = 0; i < this.blanks.length(); i++) {
                 EditText current = new EditText(this);
                 current.setHint(this.blanks.getString(i));
-                //  TODO REMOVE
-                madlibContianerLL.addView(current);
+                this.madlibContianerLL.addView(current);
             }
+
         }
         catch (JSONException e) {
+            Log.w("CHITGOPEKAR", e.toString());
+        }
+    }
+
+    /**
+     * Converts cached Madlib (from SP) into single JSONObject
+     * that MainActivity.renderMadlib(JSONObject madlib) can render
+     */
+    public void renderLastMadlib() {
+
+        // Creating madlib JSONObject
+        JSONObject madlib;
+        try {
+            if (this.sharedPreferences.contains(this.MADLIB_LAST)) {
+                madlib = new JSONObject(
+                        this.sharedPreferences.getString(this.MADLIB_LAST,
+                                null)
+                ); // defValue never triggered
+            }
+            else
+                throw new JSONException("");
+        }
+        catch (JSONException e) {
+            // Just go for a brand new Madlib
+            this.getMadlib();
+            return;
+        }
+
+        // Rendering Object
+        this.renderMadlib(madlib);
+
+        // Putting in answers
+        try {
+            // Get loaded answers
+            JSONArray cachedAnswers = new JSONArray(madlib.getString("answers"));
+
+            for (int i = 1; i < this.madlibContianerLL.getChildCount(); i++) {
+                EditText current = (EditText) this.madlibContianerLL.getChildAt(i);
+                current.setText(cachedAnswers.getString(i-1)); // starting at idx = 1 for children, not ans
+            }
+        }
+        catch (Exception e) {
             Log.w("CHITGOPEKAR", e.toString());
         }
     }
@@ -126,8 +192,20 @@ public class MainActivity extends AppCompatActivity {
      * Madlib Container layout and removing all views
      */
     public void destroyMadlib() {
-        final LinearLayout madlibContianerLL = findViewById(R.id.madlib_container);
-        madlibContianerLL.removeAllViews();
+        this.madlibContianerLL.removeAllViews();
+    }
+
+    /**
+     * Saves all answers to memory.
+     */
+    public void genAnswers() {
+        this.answers = new JSONArray();
+
+        for (int i = 1; i < this.madlibContianerLL.getChildCount(); i++) {
+            EditText tv = (EditText) this.madlibContianerLL.getChildAt(i);
+            String text = tv.getText().toString();
+            this.answers.put(text);
+        }
     }
 
     /**
@@ -135,34 +213,36 @@ public class MainActivity extends AppCompatActivity {
      * that there is some non-space character in each of them.
      * Returns false if one missed input is found.
      * Pops Toast with missing input field's name.
-     * Also creates MainActivity.answers JSONArray while validating.
-     * @return
+     * @return boolean, whether or not the Madlib is valid
      */
     public boolean validateMadlib() {
-        final LinearLayout madlibContianerLL = findViewById(R.id.madlib_container);
-        this.answers = new JSONArray();
-
-        for (int i = 0; i < madlibContianerLL.getChildCount(); i++) {
-
-            View v = madlibContianerLL.getChildAt(i);
-            if (!(v instanceof EditText))
-                continue;
-
-            TextView tv = (TextView) v;
-            String text = tv.getText().toString();
-
-            if (text.replace(" ", "").equals("")) {
-                Toast.makeText(this, "Enter a value for '" + tv.getHint().toString() + "'!", Toast.LENGTH_SHORT).show();
-                return false;
-            }
-            else {
-                this.answers.put(text);
+        try {
+            for (int i = 0; i < this.answers.length(); i++) {
+                // Blank answer -> find TV -> pop toast -> return false
+                if (this.answers.getString(i).replace(" ", "").equals("")) {
+                    TextView blankTV = (TextView) this.madlibContianerLL.getChildAt(i+1); // TV @ idx = 0, shift up by 1
+                    Toast.makeText(
+                            this,
+                            "Enter a value for '" + blankTV.getHint().toString() + "'!",
+                            Toast.LENGTH_SHORT
+                    ).show();
+                    return false;
+                }
             }
         }
-
+        catch (JSONException e) {
+            Log.w("CHITGOPEKAR", e.toString());
+            return false;
+        }
         return true;
     }
 
+    /**
+     * Combines user-answers and Madlib template and
+     * HTML logic to get a formatted Madlib
+     * @return String, the HTML repr of the Madlib
+     * @throws JSONException
+     */
     public String genSolutionHTML() throws JSONException {
         final TextView madlibTitleTv = findViewById(this.TITLE);
 
@@ -181,7 +261,17 @@ public class MainActivity extends AppCompatActivity {
         return html;
     }
 
+    /**
+     * If all answers are filled -> sends Madlib (as HTML
+     * from MainActivity.genSolutionHTML) to Solution
+     * Activity for viewing. If there's a missing answer ->
+     * starts a shake animation on the solve button.
+     * @param v Button that called the method onClick.
+     */
     public void solveMadlib(View v) {
+        // Generate Answers
+        this.genAnswers();
+
         // If the user hasn't solved their Madlib yet -> shake btn & return
         if (!this.validateMadlib()) {
             v.startAnimation(AnimationUtils.loadAnimation(this,R.anim.shake));
@@ -202,4 +292,42 @@ public class MainActivity extends AppCompatActivity {
         intent.putExtra(this.SOLUTION, solution);
         startActivity(intent);
     }
+
+    /**
+     * Override the default onStop() method and save our data to SP too!
+     */
+    @Override
+    public void onStop() {
+        super.onStop();
+        try {
+            this.saveMadlibOnClose();
+        }
+        catch (JSONException e) {
+            Log.w("CHITGOPEKAR", e.toString());
+        }
+    }
+
+    /**
+     * Saves the current Madlib being viewed to SP onClose
+     * Works regardless of completion status
+     */
+    public void saveMadlibOnClose() throws JSONException {
+        // User hasn't clicked 'Solve' yet
+        if (this.answers == null)
+            this.genAnswers();
+
+        // Create Madlib object
+        JSONObject madlib = new JSONObject();
+        TextView titleTV = (TextView) this.madlibContianerLL.getChildAt(0);
+        madlib.put("title", titleTV.getText().toString());
+        madlib.put("blanks", this.blanks.toString());
+        madlib.put("answers", this.answers.toString());
+        madlib.put("template", this.template.toString());
+
+        // Save as MADLIB_LAST
+        SharedPreferences.Editor editor = this.sharedPreferences.edit();
+        editor.putString(this.MADLIB_LAST, madlib.toString());
+        editor.apply();
+    }
+
 }
