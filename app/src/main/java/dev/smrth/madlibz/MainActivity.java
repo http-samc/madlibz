@@ -33,7 +33,7 @@ import org.json.JSONObject;
 public class MainActivity extends AppCompatActivity {
 
     // Constants
-    private final String MADLIB_API_URL = "https://madlibz.herokuapp.com/api/random";
+    private final String MADLIB_API_URL = "https://www.smrth.dev/api/madlibz";
     public static final String SOLUTION = "MADLIB_SOLUTION";
     private final int TITLE = 42069;
 
