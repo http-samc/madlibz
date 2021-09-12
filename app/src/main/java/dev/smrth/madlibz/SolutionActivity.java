@@ -42,4 +42,10 @@ public class SolutionActivity extends AppCompatActivity {
         Intent shareIntent = Intent.createChooser(sendIntent, null);
         startActivity(shareIntent);
     }
+
+    public void goHome(View v) {
+        // Send back to MainActivity
+        Intent intent = new Intent(getBaseContext(), MainActivity.class);
+        startActivity(intent);
+    }
 }

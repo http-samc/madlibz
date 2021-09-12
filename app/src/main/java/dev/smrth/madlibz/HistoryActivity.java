@@ -100,4 +100,10 @@ public class HistoryActivity extends AppCompatActivity {
         Intent intent = new Intent(getBaseContext(), MainActivity.class);
         startActivity(intent);
     }
+
+    public void goHome(View v) {
+        // Send back to MainActivity
+        Intent intent = new Intent(getBaseContext(), MainActivity.class);
+        startActivity(intent);
+    }
 }

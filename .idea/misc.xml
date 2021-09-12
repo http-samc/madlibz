@@ -14,6 +14,8 @@
         <entry key="..\:/Programming/madlibz/app/src/main/res/layout/activity_solution.xml" value="0.33" />
         <entry key="..\:/Programming/madlibz/app/src/main/res/mipmap-anydpi-v26/ic_launcherr.webp.xml" value="0.34791666666666665" />
         <entry key="..\:/Users/chitgopekar1734/Documents/GitHub/madlibz/app/src/main/res/layout/activity_main.xml" value="0.36666666666666664" />
+        <entry key="app/src/main/res/layout/activity_history.xml" value="0.5911458333333334" />
+        <entry key="app/src/main/res/layout/activity_solution.xml" value="0.5911458333333334" />
       </map>
     </option>
   </component>
@@ -22,5 +24,12 @@
   </component>
   <component name="ProjectType">
     <option name="id" value="Android" />
+  </component>
+  <component name="VisualizationToolProject">
+    <option name="state">
+      <ProjectState>
+        <option name="scale" value="0.5911458333333334" />
+      </ProjectState>
+    </option>
   </component>
 </project>
