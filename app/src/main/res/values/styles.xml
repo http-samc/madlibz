@@ -34,7 +34,7 @@
         <item name="android:layout_weight">1</item>
         <item name="android:minWidth">40dip</item>
         <item name="android:minHeight">40dip</item>
-        <item name="android:width">50dip</item>
+        <item name="android:width">@dimen/actionWidth</item>
         <item name="android:textColor">@color/bootstrap_brand_secondary_text</item>
         <item name="android:background">@drawable/action_btn</item>
         <item name="android:gravity">center_horizontal|center_vertical</item>
@@ -54,7 +54,7 @@
     <style name="madlibHistoryDelAllBtn" parent="actionBtn">
         <item name="android:background">@drawable/del_all_btn</item>
         <item name="android:text">@string/del_all_btn</item>
-        <item name="android:width">60dip</item>
+        <item name="android:width">@dimen/delAllWidth</item>
         <item name="android:maxWidth">80dip</item>
     </style>
 </resources>
